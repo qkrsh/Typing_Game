@@ -18,8 +18,7 @@ init();
 function init(){
     buttonChange('게임로딩중...');
     getWords();
-    wordInput.addEventListener('input',checkMatch)
-
+    wordInput.addEventListener('input',checkMatch);
 }
 
 //게임 실행
@@ -31,32 +30,10 @@ function run(){
     time=GAME_TIMER;
     wordInput.focus();
     scoreDisplay.innerText=0;
+    score=0;
    timeInterval= setInterval(countDown,1000);
    checkInterval=setInterval(checkState,50);
    buttonChange('게임중');
-}
-
-//단어 불러오기
-function getWords(){
-        axios.get('https://random-word-api.herokuapp.com/word?number=20')
-        .then(function (response) {
-            response.data.forEach((word)=>{
-                if(word.length<10){
-                    words.push(word);
-                }
-            })
-            buttonChange('게임시작!!');
-        })
-        .catch(function (error) {
-        console.log(error);
-        })
-}
-
-function checkState(){
-    if(!isPlaying&&time===0){
-        buttonChange("게임시작!!")
-        clearInterval(checkInterval)
-    }
 }
 
 //단어 정답 체크
@@ -74,19 +51,73 @@ function checkMatch(){
     }
 }
 
+//단어 불러오기
+function getWords(){
+        axios.get('https://random-word-api.herokuapp.com/word?number=20')
+        .then(function (response) {
+            response.data.forEach((word)=>{
+                if(word.length<8){
+                    words.push(word);
+                }
+            })
+            buttonChange('게임시작!!');
+        })
+        .catch(function (error) {
+        console.log(error);
+        })
+}
 
-
+function checkState(){
+    if(!isPlaying&&time===0){
+        buttonChange("게임시작!!")
+        clearInterval(checkInterval)
+    }
+}
 
 function countDown(){
     time>0 ? time--: isPlaying=false;
     if(!isPlaying){
-        clearInterval(timeInterval)
+        clearInterval(timeInterval);
+        rank(score);
     }
     timeDisplay.innerHTML =time;
 }
-
 
 function buttonChange(text){
     button.innerText=text;
     text==='게임시작!!'?button.classList.remove('loading') : button.classList.add('loading');
 }
+
+function rank(score){
+    let list=document.querySelector('.rank');
+    list.innerHTML+="<li>"+score+"</li>";
+    sortList();
+}
+
+
+function sortList() {
+   var list, i, switching, b, shouldSwitch;
+   list=document.querySelector('.rank');
+   switching = true;
+  
+  while (switching) {
+    switching = false;
+    b = list.getElementsByTagName("LI");
+    for (i = 0; i < (b.length - 1); i++) {
+      shouldSwitch = false;
+    
+      if (b[i].innerHTML < b[i + 1].innerHTML) {
+      
+        shouldSwitch = true;
+        break;
+      }
+    }
+    if (shouldSwitch) {
+     
+      b[i].parentNode.insertBefore(b[i + 1], b[i]);
+      switching = true;
+    }
+  }
+}
+
+

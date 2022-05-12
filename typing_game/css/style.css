@@ -6,21 +6,23 @@
 body{
     display: flex;
     flex-direction: column;
-    justify-content: center;
     align-items: center;
 }
 
 .header{
     width: 100%;
+    height: 80px;
     background: #3b5999;
     color: #fff;
     text-align: center;
     padding: lrem;
+    padding-top: 30px;
 }
 
 .word-display{
     margin-top: 3rem;
     font-size: 80px;
+    font-weight: 400;
     color: #3b5999;
 }
 
@@ -51,8 +53,25 @@ body{
     margin-top: 3rem;
     cursor: pointer;
 }
+
+.rank-list{
+    background: #91a1c4;
+    color: #fff;
+    display: flex;
+    width: 100%;
+    height: 300px;
+    font-size: 20px;
+}
+.rank{
+    margin-left: 80px;
+    list-style: none;
+}
+.ctx{
+    font-weight: 800;
+    color:#3b5999;
+}
+
 .loading{
     background: #ccc;
-    cursor: not-allowed;
-    
+    cursor: not-allowed;   
 }
